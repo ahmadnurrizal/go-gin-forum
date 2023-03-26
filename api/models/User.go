@@ -4,7 +4,6 @@ import (
 	"errors"
 	"html"
 	"log"
-	"os"
 	"strings"
 	"time"
 
@@ -45,7 +44,7 @@ func (u *User) AfterFind() (err error) {
 		return err
 	}
 	if u.AvatarPath != "" {
-		u.AvatarPath = os.Getenv("DO_SPACES_URL") + u.AvatarPath
+		u.AvatarPath = u.AvatarPath
 	}
 	//dont return the user password
 	// u.Password = ""

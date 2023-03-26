@@ -2,9 +2,12 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 	"strconv"
 
 	"github.com/ahmadnurrizal/forum/api/fileupload"
@@ -167,6 +170,8 @@ func (server *Server) UpdateAvatar(c *gin.Context) {
 		})
 		return
 	}
+
+	// Get the file from the request
 	file, err := c.FormFile("file")
 	if err != nil {
 		errList["Invalid_file"] = "Invalid File"
@@ -176,15 +181,44 @@ func (server *Server) UpdateAvatar(c *gin.Context) {
 		})
 		return
 	}
-	uploadedFile, fileErr := fileupload.FileUpload.UploadFile(file)
+
+	//find user from database
+	user := models.User{}
+	userGotten, err := user.FindUserByID(server.DB, uint32(uid))
+	if err != nil {
+		errList["No_user"] = "No User Found"
+		c.JSON(http.StatusNotFound, gin.H{
+			"status": http.StatusNotFound,
+			"error":  errList,
+		})
+		return
+	}
+
+	//Delete the old image if exists
+	if userGotten.AvatarPath != "" {
+		filePath := filepath.Join("assets", "upload", userGotten.AvatarPath)
+		fmt.Println(userGotten.AvatarPath)
+		fmt.Println(filePath)
+		err := os.Remove(filePath)
+		if err != nil {
+			errList["Cannot_Delete"] = "Cannot delete old image, please try again later"
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"status": http.StatusInternalServerError,
+				"error":  errList,
+			})
+			return
+		}
+	}
+
+	//Upload the new image
+	fileName, fileErr := fileupload.FileUpload.UploadFile(file)
 	if fileErr != nil {
 		c.JSON(http.StatusUnprocessableEntity, fileErr)
 		return
 	}
 
 	//Save the image path to the database
-	user := models.User{}
-	user.AvatarPath = uploadedFile
+	user.AvatarPath = fileName
 	user.Prepare()
 	updatedUser, err := user.UpdateAUserAvatar(server.DB, uint32(uid))
 	if err != nil {
