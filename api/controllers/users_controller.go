@@ -74,6 +74,14 @@ func (server *Server) CreateUser(c *gin.Context) {
 	})
 }
 
+func (server *Server) TestApi(c *gin.Context) {
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":   http.StatusOK,
+		"response": "Hello World",
+	})
+}
+
 func (server *Server) GetUsers(c *gin.Context) {
 
 	//clear previous error if any
