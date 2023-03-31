@@ -70,7 +70,7 @@ func (server *Server) CreateUser(c *gin.Context) {
 	}
 	c.JSON(http.StatusCreated, gin.H{
 		"status":   http.StatusCreated,
-		"response": userCreated,
+		"data": userCreated,
 	})
 }
 
