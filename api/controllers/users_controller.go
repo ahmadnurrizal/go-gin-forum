@@ -69,8 +69,8 @@ func (server *Server) CreateUser(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H{
-		"status":   http.StatusCreated,
-		"data": userCreated,
+		"status": http.StatusCreated,
+		"data":   userCreated,
 	})
 }
 
@@ -91,8 +91,8 @@ func (server *Server) GetUsers(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"status": http.StatusOK,
-		"data":   users,
+		"status":   http.StatusOK,
+		"response": users,
 	})
 }
 
