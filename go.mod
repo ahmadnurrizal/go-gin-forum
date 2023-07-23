@@ -56,9 +56,11 @@ require (
 	github.com/ugorji/go/codec v1.2.11 // indirect
 	github.com/vanng822/go-premailer v1.20.1 // indirect
 	golang.org/x/arch v0.3.0 // indirect
-	golang.org/x/crypto v0.7.0
+	golang.org/x/crypto v0.8.0
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	gorm.io/driver/postgres v1.5.2 // indirect
+	gorm.io/gorm v1.25.2 // indirect
 )
